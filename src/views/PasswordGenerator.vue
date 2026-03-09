@@ -71,7 +71,8 @@
       </div>
       
       <button class="primary-btn" @click="generatePassword">重新生成</button>
-      <button class="secondary-btn" @click="router.push('/add')">使用此密码</button>
+      <!-- 新的按钮代码（绑定新函数） -->
+      <button class="secondary-btn" @click="useGeneratedPassword">使用此密码</button>
     </div>
     
     <div v-if="showCopySuccess" class="copy-success">已复制到剪贴板</div>
@@ -119,6 +120,16 @@ function copyToClipboard() {
       setTimeout(() => {
         showCopySuccess.value = false
       }, 2000)
+    })
+  }
+}
+
+// 修复：跳转时携带生成的密码
+function useGeneratedPassword() {
+  if (generatedPassword.value && generatedPassword.value !== '请至少选择一种字符类型') {
+    router.push({
+      path: '/add',
+      query: { password: generatedPassword.value }
     })
   }
 }

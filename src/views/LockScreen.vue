@@ -70,7 +70,8 @@ import {
   validateMasterPassword, 
   saveRememberStatus, 
   getRememberStatus, 
-  isFirstTime 
+  isFirstTime,
+  setMasterPasswordTemp // 新增：导入临时存储主密码的方法
 } from '../utils/storage.js'
 
 const router = useRouter()
@@ -100,6 +101,8 @@ function handleSubmit() {
   
   saveMasterPassword(password.value)
   saveRememberStatus(remember.value)
+  // 新增：设置初始密码后，临时存储明文主密码
+  setMasterPasswordTemp(password.value)
   router.push('/home')
 }
 
@@ -118,6 +121,8 @@ function handleUnlock() {
   }
   
   saveRememberStatus(remember.value)
+  // 新增：解锁成功后，临时存储明文主密码
+  setMasterPasswordTemp(password.value)
   router.push('/home')
 }
 
@@ -130,6 +135,7 @@ onMounted(() => {
 </script>
 
 <style scoped>
+/* 样式部分完全不变，无需修改 */
 .lock-screen {
   display: flex;
   justify-content: center;

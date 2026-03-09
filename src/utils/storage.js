@@ -62,6 +62,7 @@ export function clearAllData() {
   localStorage.removeItem('pwm_data')
   localStorage.removeItem('pwm_remember')
   localStorage.removeItem('pwm_lock_time')
+  localStorage.removeItem('pwm_master_password_temp') // 新增：清空临时主密码
 }
 
 // 导出数据
@@ -90,4 +91,20 @@ export function importData(jsonData, masterPassword) {
     console.error('导入失败:', error)
     return false
   }
+}
+
+// ===================== 新增函数（只出现一次，无重复） =====================
+// 获取主密码哈希
+export function getMasterPasswordHash() {
+  return localStorage.getItem('pwm_master_hash') || ''
+}
+
+// 获取临时存储的明文主密码
+export function getMasterPassword() {
+  return localStorage.getItem('pwm_master_password_temp') || ''
+}
+
+// 临时存储明文主密码（登录/设置密码成功后调用）
+export function setMasterPasswordTemp(password) {
+  localStorage.setItem('pwm_master_password_temp', password)
 }

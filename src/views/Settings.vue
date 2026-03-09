@@ -116,7 +116,9 @@ import {
   getLockTime, 
   clearAllData as clearStorageData, 
   exportData as exportStorageData, 
-  importData as importStorageData 
+  importData as importStorageData,
+  getMasterPasswordHash, // 新增
+  getMasterPassword // 新增
 } from '../utils/storage.js'
 
 const router = useRouter()
@@ -128,8 +130,8 @@ const error = ref('')
 const lockTime = ref(getLockTime())
 const showCopySuccess = ref(false)
 
-// 模拟主密码（实际应用中应该从登录状态获取）
-const masterPassword = ref('test123') // 临时值，实际应从全局状态获取
+// 修复：读取真实的主密码（从storage，而非硬编码）
+const masterPassword = ref(getMasterPassword() || '') 
 
 function changePassword() {
   error.value = ''
@@ -157,6 +159,7 @@ function changePassword() {
   savePasswords(passwords, newPassword.value)
   
   // 更新当前主密码
+  localStorage.setItem('pwm_master_password_temp', newPassword.value)
   masterPassword.value = newPassword.value
   
   showChangePassword.value = false
